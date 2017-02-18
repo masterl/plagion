@@ -32,13 +32,13 @@ CC = gcc
 
 GENERALSTARTFLAGS = -Wall
 
-ALLCOMPFLAGS = $(GENERALSTARTFLAGS)
+ALLCOMPFLAGS = $(GENERALSTARTFLAGS) `pkg-config --cflags gtk+-3.0`
 
 ifeq ($(MAKECMDGOALS),test)
 	TESTFLAGS =
 endif
 
-LINKFLAGS = $(TESTFLAGS) `pkg-config --cflags --libs gtk+-3.0`
+LINKFLAGS = $(TESTFLAGS) `pkg-config --libs gtk+-3.0`
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #	Sources directories
@@ -46,13 +46,15 @@ LINKFLAGS = $(TESTFLAGS) `pkg-config --cflags --libs gtk+-3.0`
 # ======== main ========
 MAINDIR = src
 
+GUIDIR=src/gui
+
 UTILSDIR = utils
 
 ifeq ($(MAKECMDGOALS),test)
 	TESTSDIR = tests
-	_ALLSRCDIRLIST = $(MAINDIR) $(UTILSDIR) $(TESTSDIR)
+	_ALLSRCDIRLIST = $(MAINDIR) $(UTILSDIR) $(TESTSDIR) $(GUIDIR)
 else
-	_ALLSRCDIRLIST = $(MAINDIR) $(UTILSDIR)
+	_ALLSRCDIRLIST = $(MAINDIR) $(UTILSDIR) $(GUIDIR)
 endif
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -86,6 +88,7 @@ ifeq ($(MAKECMDGOALS),exec)
 endif
 
 UTILSFILES = $(wildcard $(UTILSDIR)/*.c)
+GUIFILES = $(wildcard $(GUIDIR)/*.c)
 HELPERSFILES = $(wildcard $(HELPERSDIR)/*.c)
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -95,13 +98,15 @@ HELPERSFILES = $(wildcard $(HELPERSDIR)/*.c)
 MAINDEPS := $(addprefix $(MAINDIR)/$(DEPDIR)/,$(patsubst %.c,%.d,$(notdir $(MAINFILES))))
 UTILSDEPS := $(addprefix $(UTILSDIR)/$(DEPDIR)/,$(patsubst %.c,%.d,$(notdir $(UTILSFILES))))
 TESTSDEPS := $(addprefix $(TESTSDIR)/$(DEPDIR)/,$(patsubst %.c,%.d,$(notdir $(TESTSFILES))))
+GUIDEPS := $(addprefix $(GUIDIR)/$(DEPDIR)/,$(patsubst %.c,%.d,$(notdir $(GUIFILES))))
 
 #   Dependencias dos .d
 MAINDEPDEPS := $(subst .d,$(DEPSUFFIX).d,$(MAINDEPS))
 UTILSDEPDEPS := $(subst .d,$(DEPSUFFIX).d,$(UTILSDEPS))
+GUIDEPDEPS := $(subst .d,$(DEPSUFFIX).d,$(GUIDEPS))
 TESTSDEPDEPS := $(subst .d,$(DEPSUFFIX).d,$(TESTSDEPS))
 
-ALLDEPDEPS :=	$(MAINDEPDEPS) $(UTILSDEPDEPS) $(TESTSDEPDEPS)
+ALLDEPDEPS :=	$(MAINDEPDEPS) $(UTILSDEPDEPS) $(TESTSDEPDEPS) $(GUIDEPDEPS)
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Object Lists
@@ -109,8 +114,9 @@ ALLDEPDEPS :=	$(MAINDEPDEPS) $(UTILSDEPDEPS) $(TESTSDEPDEPS)
 MAINOBJS := $(addprefix $(MAINDIR)/$(OBJDIR)/,$(patsubst %.c,%.o,$(notdir $(MAINFILES))))
 UTILSOBJS := $(addprefix $(UTILSDIR)/$(OBJDIR)/,$(patsubst %.c,%.o,$(notdir $(UTILSFILES))))
 TESTSOBJS := $(addprefix $(TESTSDIR)/$(OBJDIR)/,$(patsubst %.c,%.o,$(notdir $(TESTSFILES))))
+GUIOBJS := $(addprefix $(GUIDIR)/$(OBJDIR)/,$(patsubst %.c,%.o,$(notdir $(GUIFILES))))
 
-ALLOBJS :=	$(MAINOBJS) $(UTILSOBJS) $(TESTSOBJS)
+ALLOBJS :=	$(MAINOBJS) $(UTILSOBJS) $(TESTSOBJS) $(GUIOBJS)
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Executable

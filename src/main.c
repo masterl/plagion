@@ -3,6 +3,10 @@
 
 int main( int argc, char const *argv[] )
 {
-    init_application();
+    if( argc == 1 ) { // GUI
+        init_application();
+    } else { // COMMAND LINE
+    }
+
     return 0;
 }

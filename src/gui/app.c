@@ -18,17 +18,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <gtk/gtk.h>
-#include <initial_interface.h>
+#include "app.h"
+#include "initial_interface.h"
 
-int application( void )
+int init_application( void )
 {
     GtkApplication *app;
     int status;
 
     app = gtk_application_new( "org.plagion", G_APPLICATION_FLAGS_NONE );
     g_signal_connect( app, "activate", G_CALLBACK( initial_interface ), NULL );
-    status = g_application_run( G_APPLICATION( app ), argc, argv );
+    status = g_application_run( G_APPLICATION( app ), 0, NULL );
     g_object_unref( app );
 
     return status;

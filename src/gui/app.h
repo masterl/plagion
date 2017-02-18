@@ -17,11 +17,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#ifndef PLAGION_APP_H
 
-#ifndef PLAGION_RESULT_INTERFACE_H
-
-#define PLAGION_RESULT_INTERFACE_H
+#define PLAGION_APP_H
 #include <gtk/gtk.h>
 
-void result_interface( GtkWidget *widget, gpointer app );
+int init_application( void );
 #endif

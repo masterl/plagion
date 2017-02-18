@@ -18,7 +18,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <initial_interface.h>
+#include "initial_interface.h"
+#include "result_interface.h"
 
 void initial_interface( GtkApplication *app, gpointer user_data )
 {
@@ -26,12 +27,12 @@ void initial_interface( GtkApplication *app, gpointer user_data )
 
     window = gtk_application_window_new( app );
     gtk_window_set_title( GTK_WINDOW( window ), "Plagion" );
-    gtk_window_set_default_size( GTK_WINDOW( window ), 300, 200 );
     gtk_window_set_resizable( GTK_WINDOW( window ), FALSE );
     gtk_container_set_border_width( GTK_CONTAINER( window ), 10 );
 
     grid = gtk_grid_new();
     gtk_grid_set_column_homogeneous( GTK_GRID( grid ), TRUE );
+    gtk_grid_set_row_homogeneous( GTK_GRID( grid ), TRUE );
     gtk_container_add( GTK_CONTAINER( window ), grid );
 
     label = gtk_label_new( "Arquivo a ser verificado: " );
@@ -43,10 +44,11 @@ void initial_interface( GtkApplication *app, gpointer user_data )
 
     button = gtk_button_new_with_label(
         "Verificar" ); // TODO change background color:#5cb85c border:#4cae4c
+    g_signal_connect( button, "clicked", G_CALLBACK( result_interface ), app );
     gtk_widget_set_valign(
         button,
         GTK_ALIGN_END ); // TODO on hover background color:#449d44 border:#398439
-    gtk_grid_attach( GTK_GRID( grid ), button, 0, 1, 2, 1 );
+    gtk_grid_attach( GTK_GRID( grid ), button, 0, 1, 2, 2 );
 
     gtk_widget_show_all( window );
 }

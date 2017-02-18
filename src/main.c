@@ -1,6 +1,8 @@
+#include "gui/app.h"
 #include <stdio.h>
 
-int main( void )
+int main( int argc, char const *argv[] )
 {
+    init_application();
     return 0;
 }

@@ -1,3 +1,9 @@
+# Folders #
+###########
+bin/
+deps/
+objs/
+
 # Compiled Object files
 *.slo
 *.lo
@@ -13,9 +19,14 @@
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-*.smod
+# Packages #
+############
+*.7z
+*.gz
+*.zip
+*.iso
+*.rar
+*.tar
 
 # Compiled Static libraries
 *.lai
@@ -26,4 +37,5 @@
 # Executables
 *.exe
 *.out
+*.bin
 *.app

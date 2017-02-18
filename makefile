@@ -38,7 +38,7 @@ ifeq ($(MAKECMDGOALS),test)
 	TESTFLAGS =
 endif
 
-LINKFLAGS = $(TESTFLAGS)
+LINKFLAGS = $(TESTFLAGS) `pkg-config --cflags --libs gtk+-3.0`
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #	Sources directories
@@ -72,29 +72,29 @@ OBJDIRLIST = $(addsuffix /$(OBJDIR),$(_ALLSRCDIRLIST))
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Sources list
 #--------------------------------------------------------------------------
-# ALLSRCFILES = $(foreach dir,$(_ALLSRCDIRLIST),$(wildcard $(dir)/*.cpp))
+# ALLSRCFILES = $(foreach dir,$(_ALLSRCDIRLIST),$(wildcard $(dir)/*.c))
 
 ifeq ($(MAKECMDGOALS),test)
-	ALLSRCFILES = $(filter-out $(foreach dir,$(_ALLSRCDIRLIST),$(wildcard $(dir)/*.cpp)) , $(MAINDIR)/main.cpp)
-	MAINFILES = $(filter-out $(MAINDIR)/main.cpp , $(wildcard $(MAINDIR)/*.cpp) )
-	TESTSFILES = $(wildcard $(TESTSDIR)/*.cpp)
+	ALLSRCFILES = $(filter-out $(foreach dir,$(_ALLSRCDIRLIST),$(wildcard $(dir)/*.c)) , $(MAINDIR)/main.c)
+	MAINFILES = $(filter-out $(MAINDIR)/main.c , $(wildcard $(MAINDIR)/*.c) )
+	TESTSFILES = $(wildcard $(TESTSDIR)/*.c)
 endif
 
 ifeq ($(MAKECMDGOALS),exec)
-	ALLSRCFILES = $(foreach dir,$(_ALLSRCDIRLIST),$(wildcard $(dir)/*.cpp))
-	MAINFILES = $(wildcard $(MAINDIR)/*.cpp)
+	ALLSRCFILES = $(foreach dir,$(_ALLSRCDIRLIST),$(wildcard $(dir)/*.c))
+	MAINFILES = $(wildcard $(MAINDIR)/*.c)
 endif
 
-UTILSFILES = $(wildcard $(UTILSDIR)/*.cpp)
-HELPERSFILES = $(wildcard $(HELPERSDIR)/*.cpp)
+UTILSFILES = $(wildcard $(UTILSDIR)/*.c)
+HELPERSFILES = $(wildcard $(HELPERSDIR)/*.c)
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Dependencies Lists
 #--------------------------------------------------------------------------
 #   Dependencias dos .o
-MAINDEPS := $(addprefix $(MAINDIR)/$(DEPDIR)/,$(patsubst %.cpp,%.d,$(notdir $(MAINFILES))))
-UTILSDEPS := $(addprefix $(UTILSDIR)/$(DEPDIR)/,$(patsubst %.cpp,%.d,$(notdir $(UTILSFILES))))
-TESTSDEPS := $(addprefix $(TESTSDIR)/$(DEPDIR)/,$(patsubst %.cpp,%.d,$(notdir $(TESTSFILES))))
+MAINDEPS := $(addprefix $(MAINDIR)/$(DEPDIR)/,$(patsubst %.c,%.d,$(notdir $(MAINFILES))))
+UTILSDEPS := $(addprefix $(UTILSDIR)/$(DEPDIR)/,$(patsubst %.c,%.d,$(notdir $(UTILSFILES))))
+TESTSDEPS := $(addprefix $(TESTSDIR)/$(DEPDIR)/,$(patsubst %.c,%.d,$(notdir $(TESTSFILES))))
 
 #   Dependencias dos .d
 MAINDEPDEPS := $(subst .d,$(DEPSUFFIX).d,$(MAINDEPS))
@@ -106,9 +106,9 @@ ALLDEPDEPS :=	$(MAINDEPDEPS) $(UTILSDEPDEPS) $(TESTSDEPDEPS)
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Object Lists
 #--------------------------------------------------------------------------
-MAINOBJS := $(addprefix $(MAINDIR)/$(OBJDIR)/,$(patsubst %.cpp,%.o,$(notdir $(MAINFILES))))
-UTILSOBJS := $(addprefix $(UTILSDIR)/$(OBJDIR)/,$(patsubst %.cpp,%.o,$(notdir $(UTILSFILES))))
-TESTSOBJS := $(addprefix $(TESTSDIR)/$(OBJDIR)/,$(patsubst %.cpp,%.o,$(notdir $(TESTSFILES))))
+MAINOBJS := $(addprefix $(MAINDIR)/$(OBJDIR)/,$(patsubst %.c,%.o,$(notdir $(MAINFILES))))
+UTILSOBJS := $(addprefix $(UTILSDIR)/$(OBJDIR)/,$(patsubst %.c,%.o,$(notdir $(UTILSFILES))))
+TESTSOBJS := $(addprefix $(TESTSDIR)/$(OBJDIR)/,$(patsubst %.c,%.o,$(notdir $(TESTSFILES))))
 
 ALLOBJS :=	$(MAINOBJS) $(UTILSOBJS) $(TESTSOBJS)
 

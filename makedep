@@ -11,7 +11,7 @@ $(TARGET):
 	@echo -e '------------------------------------------------------'
 	@echo -e '\t\tUpdating:\n\t$@\n\t$(subst .d,$(DEPSUFFIX).d,$@) ...'
 	@set -e; rm -f $(TARGET); rm -f $(ARG); \
-	$(CC) -MM $(ALLCOMPFLAGS) $(patsubst %.d,%.cpp,$(subst $(DEPDIR)/,,$(TARGET))) > $@.$$$$; \
+	$(CC) -MM $(ALLCOMPFLAGS) $(patsubst %.d,%.c,$(subst $(DEPDIR)/,,$(TARGET))) > $@.$$$$; \
 	sed 's,\($(subst .d,,$(@F))\)\.o[ :]*,$(subst $(DEPDIR),,$(@D))$(OBJDIR)/\1.o: ,g' < $@.$$$$ > $(TARGET); \
 	sed 's,\($(subst .d,,$(@F))\)\.o[ :]*,$(@D)/\1.d: ,g' < $@.$$$$ > $(ARG); \
 	rm -f $@.$$$$
